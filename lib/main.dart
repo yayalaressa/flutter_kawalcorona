@@ -33,7 +33,7 @@ class KawalCrona extends StatefulWidget {
 class _KawalCronaState extends State<KawalCrona> {
   dynamic listDataKawalCorona;
 
-  Future getDataKawalCorona() async {
+  Future<dynamic> getDataKawalCorona() async {
     //fetch data from api
 
     var url = Uri.https('api.kawalcorona.com', '/indonesia/provinsi/');
@@ -41,18 +41,16 @@ class _KawalCronaState extends State<KawalCrona> {
     // Await the http get response, then decode the json-formatted response.
     var response = await get(url);
     if (response.statusCode == 200) {
-      this.setState(() {
-        listDataKawalCorona = jsonDecode(response.body);
-      });
+      return jsonDecode(response.body);
     } else {
-      throw Exception('Failed to load album');
+      throw Exception('Failed to load data from kawalcorona.com');
     }
   }
 
   @override
   void initState() {
     super.initState();
-    this.getDataKawalCorona();
+    listDataKawalCorona = getDataKawalCorona();
   }
 
   @override
@@ -61,26 +59,29 @@ class _KawalCronaState extends State<KawalCrona> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            // ignore: unnecessary_null_comparison
-            itemCount:
-                // ignore: unnecessary_null_comparison
-                listDataKawalCorona == null ? 0 : listDataKawalCorona.length,
-            itemBuilder: (context, i) {
-              return Card(
-                child: ListTile(
-                  title: Text(
-                    "${listDataKawalCorona[i]['attributes']['Provinsi']}",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                      "Positif: ${listDataKawalCorona[i]['attributes']['Kasus_Posi']} | Sembuh: ${listDataKawalCorona[i]['attributes']['Kasus_Semb']}"),
-                ),
-              );
-            }),
-      ),
+      body: FutureBuilder<dynamic>(
+          future: listDataKawalCorona,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  // ignore: unnecessary_null_comparison
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(
+                          "${snapshot.data[i]['attributes']['Provinsi']}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                            "Positif: ${snapshot.data[i]['attributes']['Kasus_Posi']} | Sembuh: ${snapshot.data[i]['attributes']['Kasus_Semb']}"),
+                      ),
+                    );
+                  });
+            }
+            return Center(child: CircularProgressIndicator());
+          }),
     );
   }
 }

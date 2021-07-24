@@ -1,6 +1,6 @@
 {
-    "name": "flutter_kawalcorona",
-    "short_name": "flutter_kawalcorona",
+    "name": "kawal_corona",
+    "short_name": "kawal_corona",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

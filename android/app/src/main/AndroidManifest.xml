@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_kawalcorona">
+    package="id.agung.kawal_corona">
    <application
-        android:label="flutter_kawalcorona"
+        android:label="kawal_corona"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
