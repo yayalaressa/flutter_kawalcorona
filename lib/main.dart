@@ -74,8 +74,10 @@ class KawalCoronaState extends State<KawalCoronaApp> {
                 // ignore: unnecessary_null_comparison
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, i) {
-                  final positif = "${snapshot.data![i].attributes.kasusPosi}";
-                  final sembuh = "${snapshot.data![i].attributes.kasusSemb}";
+                  final String positif =
+                      "${snapshot.data![i].attributes.kasusPosi}";
+                  final String sembuh =
+                      "${snapshot.data![i].attributes.kasusSemb}";
                   return Card(
                     child: ListTile(
                         tileColor: ColorPalette.palette4,
