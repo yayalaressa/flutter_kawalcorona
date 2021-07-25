@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kawal_corona/color.dart';
 import 'package:kawal_corona/data.dart';
@@ -42,6 +44,7 @@ class KawalCoronaState extends State<KawalCoronaApp> {
     setState(() {
       listDataKawalCorona = DataKawalCorona.getDataKawalCorona();
     });
+    print("REFRESH BERHASIL");
   }
 
   @override
@@ -62,7 +65,7 @@ class KawalCoronaState extends State<KawalCoronaApp> {
   }
 
   Widget _loadDataKawalCorona() {
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<List<Corona>>(
         future: listDataKawalCorona,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -71,15 +74,13 @@ class KawalCoronaState extends State<KawalCoronaApp> {
                 // ignore: unnecessary_null_comparison
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, i) {
-                  final positif =
-                      "${snapshot.data[i]['attributes']['Kasus_Posi']}";
-                  final sembuh =
-                      "${snapshot.data[i]['attributes']['Kasus_Semb']}";
+                  final positif = "${snapshot.data![i].attributes.kasusPosi}";
+                  final sembuh = "${snapshot.data![i].attributes.kasusSemb}";
                   return Card(
                     child: ListTile(
-                        tileColor: ColorPalette.palette3,
+                        tileColor: ColorPalette.palette4,
                         title: Text(
-                          "${snapshot.data[i]['attributes']['Provinsi']}",
+                          "${snapshot.data![i].attributes.provinsi}",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: RichText(
